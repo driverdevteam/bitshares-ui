@@ -50,11 +50,38 @@ class AppInit extends React.Component {
             apiConnected: false,
             apiError: false,
             syncError: null,
-            status: ""
+            status: "",
+            extendeLogText: []
         };
+        this.saveExtendedLog = this.saveExtendedLog.bind(this);
+    }
+
+    componentDidCatch(error) {
+        this.saveExtendedLog(error.stack);
     }
 
     componentWillMount() {
+        const thiz = this;
+        const _log = console.log;
+        const _error = console.error;
+        const _warn = console.warn;
+        const _info = console.info;
+        console.log = function() {
+            thiz.saveExtendedLog(arguments);
+            _log.apply(console, arguments);
+        };
+        console.warn = function() {
+            thiz.saveExtendedLog(arguments);
+            _warn.apply(console, arguments);
+        };
+        console.error = function() {
+            thiz.saveExtendedLog(arguments);
+            _error.apply(console, arguments);
+        };
+        console.info = function() {
+            thiz.saveExtendedLog(arguments);
+            _info.apply(console, arguments);
+        };
         willTransitionTo(true, this._statusCallback.bind(this))
             .then(() => {
                 this.setState({
@@ -93,6 +120,23 @@ class AppInit extends React.Component {
 
     _statusCallback(status) {
         this.setState({status});
+    }
+
+    saveExtendedLog(logText) {
+        const maxlogslength = 20;
+        const logState = this.state.extendeLogText;
+        var text = "";
+
+        for (const value of logText) {
+            text += JSON.stringify(value).slice(1, -1);
+        }
+        if (this.state.extendeLogText.length > maxlogslength) {
+            logState.splice(0, 1);
+        }
+        if (text.indexOf(logState[this.state.extendeLogText.length - 1])) {
+            logState.push(text);
+            this.setState({extendeLogText: logState});
+        }
     }
 
     render() {
@@ -136,19 +180,23 @@ class AppInit extends React.Component {
 }
 
 AppInit = connect(AppInit, {
-    listenTo() {
-        return [IntlStore, WalletManagerStore, SettingsStore];
-    },
-    getProps() {
-        return {
-            locale: IntlStore.getState().currentLocale,
-            walletMode:
-                !SettingsStore.getState().settings.get("passwordLogin") ||
-                !!WalletManagerStore.getState().current_wallet,
-            theme: SettingsStore.getState().settings.get("themes"),
-            apiServer: SettingsStore.getState().settings.get("activeNode", "")
-        };
+        listenTo() {
+            return [IntlStore, WalletManagerStore, SettingsStore];
+        },
+        getProps() {
+            return {
+                locale: IntlStore.getState().currentLocale,
+                walletMode:
+                    !SettingsStore.getState().settings.get("passwordLogin") ||
+                    !!WalletManagerStore.getState().current_wallet,
+                theme: SettingsStore.getState().settings.get("themes"),
+                apiServer: SettingsStore.getState().settings.get(
+                    "activeNode",
+                    ""
+                )
+            };
+        }
     }
-});
+);
 AppInit = supplyFluxContext(alt)(AppInit);
 export default hot(module)(AppInit);

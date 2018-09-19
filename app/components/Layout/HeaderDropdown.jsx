@@ -390,6 +390,19 @@ export default class DropDownMenu extends React.Component {
                 </li>
 
                 <li
+                    className="extendedLog"
+                    onClick={this.props.getExtendedLog}
+                    onMouseLeave={this.props.closeExtendedLogModal}
+                >
+                    <div className="table-cell">
+                        <Icon size="2x" />
+                    </div>
+                    <div className="table-cell">
+                        <Translate content="account.log" />
+                    </div>
+                </li>
+
+                <li
                     className={cnames({
                         active: active.indexOf("/voting") !== -1,
                         disabled: !showAccountLinks
