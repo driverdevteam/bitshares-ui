@@ -57,19 +57,14 @@
     $explorer--assets--bg
 ) {
     $hamburger-submenu-display-endpoint: 990px;
-
     .explore-witness--info {
         width: 100%;
-
         border: 1px solid $explorer--witnesses--info-border;
         background: $explorer--witnesses--info-bg;
-
         padding: 12px;
         border-radius: 5px;
-
         table {
             width: 100%;
-
             thead {
                 th {
                     font-weight: 400;
@@ -78,7 +73,6 @@
                     padding-bottom: 8px;
                 }
             }
-
             tbody {
                 td {
                     color: $explorer--witnesses--info-table-text-color;
@@ -86,7 +80,6 @@
             }
         }
     }
-
     #incognito {
         background: $incognito-bg;
     }
@@ -148,19 +141,15 @@
             background-color: #fff;
         }
     }
-
     .font-secondary {
         color: $secondary-text-color;
     }
-
     svg > path {
         transition: all 0.3s ease 0s;
     }
-
     #content-wrapper {
         @include color($primary-text-color, $bg-color);
     }
-
     hr {
         border-color: $dark-text-color;
         background-color: $dark-text-color !important;
@@ -214,6 +203,7 @@
     .txtlabel.info {
         color: $info-color;
     }
+
     .txtlabel.warning {
         color: $warning-color;
     }
@@ -230,7 +220,6 @@
     .txtann.warning {
         color: $warning-color;
     }
-
     .txtann.error {
         color: $alert-color;
     }
@@ -244,7 +233,6 @@
     .notification-success {
         border-left-color: $success-color !important;
     }
-
     .action-sheet {
         @include color($light-text-color, $super-light-panel-bg-color);
         &::after {
@@ -257,7 +245,8 @@
                 @include color(
                     $light-text-color,
                     lighten($super-light-panel-bg-color, 4%)
-                ); // color: $link-text-color;
+                );
+                // color: $link-text-color;
             }
         }
     }
@@ -276,7 +265,6 @@
             border-left-color: $super-light-panel-bg-color !important;
         }
     }
-
     .json-inspector__key {
         color: $secondary-text-color !important;
     }
@@ -288,7 +276,6 @@
     h6 {
         color: $primary-text-color;
     }
-
     // copyicons
     .copyIcon {
         background-color: $button-bg-color;
@@ -296,12 +283,11 @@
             background-color: $button-bg-color;
         }
     }
-
-    .modal#marketPicker, .modal#settingsModal {
+    .modal#marketPicker,
+    .modal#settingsModal {
         background-color: $bg-color;
         border: 1px solid black;
     }
-
     .modal {
         @include color($light-text-color, $account-cells);
         .modal__highlight {
@@ -355,6 +341,7 @@
             border-bottom: 1px solid lighten($bg-color, 4%);
         }
     }
+
     .panel-left {
         @include color($light-text-color, $light-panel-bg-color);
         .block-list li > a {
@@ -369,17 +356,15 @@
     }
     .page-layout {
         background-color: lighten($account-header, 4%);
-
         .column-header {
             > ul {
                 border-bottom: 1px solid $panel-bg-color;
-
-                > li.active, li:hover {
+                > li.active,
+                li:hover {
                     border-bottom: 3px solid lightblue;
                 }
             }
         }
-
         .left-column {
             border-top-color: $bg-color;
             border-bottom-color: $bg-color;
@@ -476,7 +461,6 @@
             background-color: lighten($alert-color, 4%) !important;
         }
     }
-
     .header a.button.create-account {
         transition: color 0s !important;
         color: $button-bg-color !important;
@@ -608,7 +592,8 @@
         }
         svg > path {
             fill: #fff;
-        } // svg:hover > path { fill: $primary-text-color; }
+        }
+        // svg:hover > path { fill: $primary-text-color; }
     }
     .settings-cog {
         svg > path {
@@ -729,8 +714,7 @@
             }
             > li > span {
                 color: $light-text-color;
-            }
-            /* Hover state */
+            } /* Hover state */
             li:hover > span {
                 @include color(
                     $light-text-color,
@@ -747,7 +731,6 @@
             border-color: $secondary-text-color transparent;
         }
     }
-
     .account-image {
         .icon:hover {
             svg path {
@@ -902,7 +885,6 @@
             border-bottom: 1px solid $button-bg-color;
         }
     }
-
     // Tabs
     .tabs {
         border-bottom-color: $dark-text-color;
@@ -1060,7 +1042,6 @@
             color: $secondary-text-color;
         }
     }
-
     // Formatted assets
     .facolor-success {
         color: $success-color;
@@ -1077,7 +1058,6 @@
     .facolor-error {
         color: $error-text-color;
     }
-
     .facolor-fee {
         color: $fee-color;
     }
@@ -1294,15 +1274,12 @@
             color: $secondary-text-color;
         }
     }
-
     div.exchange-content-header {
         background-color: transparent !important;
     }
-
     .exchange-content-header {
         color: $light-text-color;
         background-color: transparent !important;
-
     }
     // .block-content-header {
     // //text-transform: uppercase;
@@ -1397,7 +1374,6 @@
             height: 100%;
             width: 100%;
         }
-
         #sticky-header-row {
             background-color: $panel-bg-color;
         }
@@ -1433,7 +1409,6 @@
     .stats .stressed-stat {
         padding: 10px 0;
         font-size: 16px;
-
         &.is-call {
             color: $call-color !important;
         }
@@ -1454,7 +1429,6 @@
         font-size: 11px;
         color: gray;
     }
-
     .buy-sell-box {
         background-color: $header-color;
         > select {
@@ -1494,18 +1468,13 @@
         text-transform: uppercase;
         cursor: pointer;
     }
-
-
     .table > tbody > tr:nth-of-type(even) {
         background-color: lighten($bg-color, 4%);
     }
-
     .table.no-stripes > tbody > tr {
         background-color: transparent;
-        
     }
-
-    //bottom stats
+    // bottom stats
     .bucket-option {
         @include button-focus($secondary-text-color, $panel-bg-color, 0);
         &:hover {
@@ -1676,7 +1645,6 @@
             border-bottom: 2px solid #020202;
         }
     }
-
     ul.dashboard-links {
         > li.active {
             color: $primary-text-color;
@@ -1728,7 +1696,6 @@
     td.pub-key {
         word-break: break-all;
     }
-
     /* Table view account */
     div.grid-content.app-tables {
         background-color: $account-background;
@@ -1889,7 +1856,6 @@
             animation-direction: reverse;
         }
     }
-
     @keyframes pulsate-green {
         0% {
             color: $pulsate-green-start;
@@ -1906,8 +1872,14 @@
             color: $pulsate-red-end;
         }
     }
-    .introjs-launcher {
+    .debug-report-launcher {
         margin-left: 15px;
+    }
+    .introjs-launcher {
+        margin-left: 2px;
+    }
+    .introjs-launcher,
+    .debug-report-launcher {
         background-color: $bs-blue;
         padding: 0 10px;
         font-size: 18px;
@@ -1977,7 +1949,6 @@
     .order-book-button-v {
         display: none;
     }
-
     @include breakpoint(large) {
         .order-book-button-v {
             display: inline-block;
@@ -2094,7 +2065,6 @@
     .qr-address-scanner {
         &-btn {
             background: #049cce;
-
             height: 2.4rem;
             border-radius: 0 5px 5px 0;
             width: 40px;
@@ -2154,31 +2124,27 @@
             font-size: 0.7rem;
             height: 17px;
             margin: 0 0 1px 10px;
+
             > option {
                 background-color: $light-panel-bg-color;
             }
         }
     }
-
     .table-highlight-hover {
         tr:hover {
             background-color: $settings-select-bg !important;
         }
     }
-
     .table thead {
         background-color: $header-color !important;
     }
-
     /* Ant Design Hacks */
     .ant-select-arrow {
         color: $light-text-color !important;
     }
-
     .ant-select-selection-selected-value {
         color: $light-text-color !important;
     }
-
     .ant-input {
         border-left: 1px solid $super-light-panel-bg-color !important;
         border-top: 1px solid $super-light-panel-bg-color !important;
@@ -2224,6 +2190,7 @@
 }
 .clear-text:after {
     content: "X";
+
     display: block;
     width: 15px;
     height: 15px;

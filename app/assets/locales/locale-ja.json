@@ -764,7 +764,8 @@
         "synced": "同期しました",
         "title": "BitShares",
         "unsynced": "同期していません",
-        "update_available": "更新があります"
+        "update_available": "更新があります",
+        "debug_report": "報告書"
     },
     "gateway": {
         "add_funds": "あなたのBitSharesアカウント<strong>%(account)s</strong>に素早く簡単に資金を追加します。 このサービスはOpenledgerによって提供されています。",

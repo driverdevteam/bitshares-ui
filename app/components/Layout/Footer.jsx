@@ -45,6 +45,10 @@ class Footer extends React.Component {
             shownOnce: false
         };
 
+        this.debugReport = {
+            modal: null
+        };
+
         this.getNode = this.getNode.bind(this);
     }
 
@@ -160,6 +164,14 @@ class Footer extends React.Component {
             ping: props.apiLatencies[node.url]
         };
     }
+
+    openDebugReportModal() {
+        this.debugReport.modal.show();
+    }
+
+    prepareAdvancedReport() {}
+
+    prepareConsoleReport() {}
 
     /**
      * Returns the current blocktime, or exception if not yet available
@@ -393,6 +405,55 @@ class Footer extends React.Component {
                         )}
                     </div>
                 </ChoiceModal>
+                <ChoiceModal
+                    modalId="footer_debug_report"
+                    ref={thiz => {
+                        this.debugReport.modal = thiz;
+                    }}
+                    choices={[
+                        {
+                            translationKey: "report.advanced_report",
+                            callback: () => {
+                                if (!this.props.synced) {
+                                    this.prepareAdvancedReport();
+                                }
+                            }
+                        },
+                        {
+                            translationKey: "report.console_report",
+                            callback: () => {
+                                if (!this.props.synced) {
+                                    this.prepareConsoleReport();
+                                }
+                            }
+                        }
+                    ]}
+                >
+                    <div>
+                        <Translate content="report.title" component="h2" />
+                        <Translate content="report.report_description" />
+                        <br />
+                        <br />
+                        <Translate content="report.link_to_github" />
+                        <br />
+                        <a
+                            href="https://github.com/bitshares/bitshares-ui/issues"
+                            target="_blank"
+                        >
+                            https://github.com/bitshares/bitshares-ui/issues
+                        </a>
+                        <br />
+                        <br />
+                        <Translate content="report.how_to_report" />
+                        <br />
+                        <br />
+                        <Translate content="report.security_report_link" />
+                        <br />
+                        <a href="https://hackthedex.io" target="_blank">
+                            https://hackthedex.io
+                        </a>
+                    </div>
+                </ChoiceModal>
                 <div className="show-for-medium grid-block shrink footer">
                     <div className="align-justify grid-block">
                         <div className="grid-block">
@@ -552,6 +613,14 @@ class Footer extends React.Component {
                                             {block_height}
                                         </span>
                                     </div>
+                                </div>
+                                <div
+                                    className="debug-report-launcher"
+                                    onClick={() => {
+                                        this.openDebugReportModal();
+                                    }}
+                                >
+                                    <Translate content="footer.debug_report" />
                                 </div>
                                 <div className="grid-block">
                                     <div

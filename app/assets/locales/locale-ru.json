@@ -764,7 +764,8 @@
         "synced": "Синхронизирован",
         "title": "%(wallet_name)s",
         "unsynced": "Не синхронизирован",
-        "update_available": "ДОСТУПНО ОБНОВЛЕНИЕ"
+        "update_available": "ДОСТУПНО ОБНОВЛЕНИЕ",
+        "debug_report": "Отчет"
     },
     "gateway": {
         "add_funds": "Быстро и легко добавьте средства на Ваш аккаунт %(wallet_name)s <strong>%(account)s</strong>. Эта услуга предоставляется Openledger.",
@@ -873,8 +874,7 @@
             "coming_soon": "Скоро",
             "min_amount": "Минимальная сумма: %(minAmount)s %(symbol)s",
             "min_amount_error": "Пожалуйста введите число >= минимума",
-            "support_block":
-                "Для получения поддержки, пожалуйста, свяжитесь с XBTS по адресу:",
+            "support_block": "Для получения поддержки, пожалуйста, свяжитесь с XBTS по адресу:",
             "under_construction": "Технические работы"
         },
         "scan_qr": "Сканировать QR-код",

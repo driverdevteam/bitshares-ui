@@ -455,8 +455,7 @@
         "buy": "Buy",
         "buy_sell": "Buy/Sell",
         "buy_quick": "Quick Buy",
-        "buy_description":
-            "Buy %(baseAsset)s %(baseName)s for %(quoteAsset)s %(quoteName)s",
+        "buy_description": "Buy %(baseAsset)s %(baseName)s for %(quoteAsset)s %(quoteName)s",
         "buy_min": "Buy at least",
         "buysell_formatter": "{direction} {asset}",
         "call": "Call Price",
@@ -779,7 +778,8 @@
         "synced": "Synced",
         "title": "%(wallet_name)s",
         "unsynced": "Out of sync",
-        "update_available": "UPDATE AVAILABLE"
+        "update_available": "UPDATE AVAILABLE",
+        "debug_report": "Report"
     },
     "gateway": {
         "add_funds": "Quickly and easily add funds to your %(wallet_name)s account <strong>%(account)s</strong>. This service is provided by Openledger.",
@@ -1329,6 +1329,15 @@
         "claim_refcode": "Claim Referral Code",
         "enter_refcode": "Enter referral code",
         "refcode_optional": "Referral Code (optional)"
+    },
+    "report": {
+        "advanced_report": "Advanced report",
+        "console_report": "Console report",
+        "title": "Error report",
+        "report_description": "This report collects the last entries in the console log and takes a screenshot of the current view before the modal is opened.",
+        "link_to_github": "Please report the issue you have found to GitHub:",
+        "how_to_report": "You can copy and paste (CTRL+V) the screenshot as well as the log entries directly into the issue content text area, pasting the screenshot also works in telegram chat.",
+        "security_report_link": "If your issue affects user security you might be eligible for a bounty. In that case do not report it publicly, but rather through:"
     },
     "settings": {
         "access": "Nodes",
