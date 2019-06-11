@@ -21,6 +21,7 @@ import ZfApi from "react-foundation-apps/src/utils/foundation-api";
 import {ChainStore} from "bitsharesjs";
 import ifvisible from "ifvisible";
 import {getWalletName} from "branding";
+import ConsoleMessages from "./ConsoleMessages";
 
 class Footer extends React.Component {
     static propTypes = {
@@ -37,7 +38,8 @@ class Footer extends React.Component {
 
         this.state = {
             showNodesPopup: false,
-            showConnectingPopup: false
+            showConnectingPopup: false,
+            showConsoleMessages: false
         };
 
         this.confirmOutOfSync = {
@@ -165,13 +167,16 @@ class Footer extends React.Component {
         };
     }
 
-    openDebugReportModal() {
+    showDebugReportModal() {
         this.debugReport.modal.show();
     }
 
     prepareAdvancedReport() {}
 
-    prepareConsoleReport() {}
+    prepareConsoleReport() {
+        //       this.setState({showConsoleMessages: true});
+        this.consoleMessages.prepareConsoleReport();
+    }
 
     /**
      * Returns the current blocktime, or exception if not yet available
@@ -410,24 +415,7 @@ class Footer extends React.Component {
                     ref={thiz => {
                         this.debugReport.modal = thiz;
                     }}
-                    choices={[
-                        {
-                            translationKey: "report.advanced_report",
-                            callback: () => {
-                                if (!this.props.synced) {
-                                    this.prepareAdvancedReport();
-                                }
-                            }
-                        },
-                        {
-                            translationKey: "report.console_report",
-                            callback: () => {
-                                if (!this.props.synced) {
-                                    this.prepareConsoleReport();
-                                }
-                            }
-                        }
-                    ]}
+                    choices={[]}
                 >
                     <div>
                         <Translate content="report.title" component="h2" />
@@ -452,6 +440,23 @@ class Footer extends React.Component {
                         <a href="https://hackthedex.io" target="_blank">
                             https://hackthedex.io
                         </a>
+                        <br />
+                        <br />
+                        <a
+                            className="button primary"
+                            onClick={() => {
+                                this.prepareConsoleReport();
+                            }}
+                        >
+                            <Translate content="report.console_report" />
+                        </a>
+                        <br />
+                        <br />
+                        <ConsoleMessages
+                            ref={thiz => {
+                                this.consoleMessages = thiz;
+                            }}
+                        />
                     </div>
                 </ChoiceModal>
                 <div className="show-for-medium grid-block shrink footer">
@@ -617,7 +622,7 @@ class Footer extends React.Component {
                                 <div
                                     className="debug-report-launcher"
                                     onClick={() => {
-                                        this.openDebugReportModal();
+                                        this.showDebugReportModal();
                                     }}
                                 >
                                     <Translate content="footer.debug_report" />
