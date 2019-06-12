@@ -1333,6 +1333,7 @@
     "report": {
         "advanced_report": "Advanced report",
         "console_report": "Console report",
+        "copy_to_clipboard": "Copy to clipboard",
         "title": "Error report",
         "report_description": "This report collects the last entries in the console log and takes a screenshot of the current view before the modal is opened.",
         "link_to_github": "Please report the issue you have found to GitHub:",

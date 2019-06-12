@@ -23,6 +23,11 @@ console.debug = function() {
     console.defaultDebug.apply(console, arguments);
     console.messages.push("debug: " + Array.from(arguments));
 };
+console.defaultInfo = console.info.bind(console);
+console.info = function() {
+    console.defaultInfo.apply(console, arguments);
+    console.messages.push("info: " + Array.from(arguments));
+};
 
 if (__PERFORMANCE_DEVTOOL__) {
     const {registerObserver} = require("react-perf-devtool");

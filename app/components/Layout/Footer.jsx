@@ -22,6 +22,8 @@ import {ChainStore} from "bitsharesjs";
 import ifvisible from "ifvisible";
 import {getWalletName} from "branding";
 import ConsoleMessages from "./ConsoleMessages";
+import Screenshot from "./Screenshot";
+import html2canvas from "html2canvas";
 
 class Footer extends React.Component {
     static propTypes = {
@@ -38,8 +40,7 @@ class Footer extends React.Component {
 
         this.state = {
             showNodesPopup: false,
-            showConnectingPopup: false,
-            showConsoleMessages: false
+            showConnectingPopup: false
         };
 
         this.confirmOutOfSync = {
@@ -135,6 +136,10 @@ class Footer extends React.Component {
         }
     }
 
+    openInNewTab(url) {
+        window.open(url, "_blank").focus();
+    }
+
     getNodeIndexByURL(url) {
         let nodes = this.props.defaults.apiServer;
 
@@ -165,17 +170,6 @@ class Footer extends React.Component {
             url: node.url,
             ping: props.apiLatencies[node.url]
         };
-    }
-
-    showDebugReportModal() {
-        this.debugReport.modal.show();
-    }
-
-    prepareAdvancedReport() {}
-
-    prepareConsoleReport() {
-        //       this.setState({showConsoleMessages: true});
-        this.consoleMessages.prepareConsoleReport();
     }
 
     /**
@@ -359,8 +353,8 @@ class Footer extends React.Component {
                     )}
                 <ChoiceModal
                     modalId="footer_out_of_sync"
-                    ref={thiz => {
-                        this.confirmOutOfSync.modal = thiz;
+                    ref={ref => {
+                        this.confirmOutOfSync.modal = ref;
                     }}
                     choices={[
                         {
@@ -412,8 +406,8 @@ class Footer extends React.Component {
                 </ChoiceModal>
                 <ChoiceModal
                     modalId="footer_debug_report"
-                    ref={thiz => {
-                        this.debugReport.modal = thiz;
+                    ref={ref => {
+                        this.debugReport.modal = ref;
                     }}
                     choices={[]}
                 >
@@ -425,8 +419,11 @@ class Footer extends React.Component {
                         <Translate content="report.link_to_github" />
                         <br />
                         <a
-                            href="https://github.com/bitshares/bitshares-ui/issues"
-                            target="_blank"
+                            onClick={() => {
+                                this.openInNewTab(
+                                    "https://github.com/bitshares/bitshares-ui/issues"
+                                );
+                            }}
                         >
                             https://github.com/bitshares/bitshares-ui/issues
                         </a>
@@ -437,7 +434,11 @@ class Footer extends React.Component {
                         <br />
                         <Translate content="report.security_report_link" />
                         <br />
-                        <a href="https://hackthedex.io" target="_blank">
+                        <a
+                            onClick={() => {
+                                this.openInNewTab("https://hackthedex.io");
+                            }}
+                        >
                             https://hackthedex.io
                         </a>
                         <br />
@@ -445,16 +446,40 @@ class Footer extends React.Component {
                         <a
                             className="button primary"
                             onClick={() => {
-                                this.prepareConsoleReport();
+                                this.consoleMessages.changeConsoleReportSize();
                             }}
                         >
                             <Translate content="report.console_report" />
                         </a>
+                        <a
+                            className="button primary"
+                            onClick={() => {
+                                this.consoleMessages.copyAllToClipboard();
+                            }}
+                        >
+                            <Translate content="report.copy_to_clipboard" />
+                        </a>
                         <br />
                         <br />
                         <ConsoleMessages
-                            ref={thiz => {
-                                this.consoleMessages = thiz;
+                            ref={ref => {
+                                this.consoleMessages = ref;
+                            }}
+                        />
+                        <br />
+                        <a
+                            className="button primary"
+                            onClick={() => {
+                                this.screenshot.prepareAdvancedReport();
+                            }}
+                        >
+                            <Translate content="report.advanced_report" />
+                        </a>
+                        <br />
+                        <br />
+                        <Screenshot
+                            ref={ref => {
+                                this.screenshot = ref;
                             }}
                         />
                     </div>
@@ -622,7 +647,11 @@ class Footer extends React.Component {
                                 <div
                                     className="debug-report-launcher"
                                     onClick={() => {
-                                        this.showDebugReportModal();
+                                        this.debugReport.modal.show();
+                                        if (this.consoleMessages)
+                                            this.consoleMessages.showConsoleLogsInTextArea(
+                                                20
+                                            );
                                     }}
                                 >
                                     <Translate content="footer.debug_report" />

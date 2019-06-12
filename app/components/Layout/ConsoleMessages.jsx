@@ -1,16 +1,12 @@
 import React from "react";
-import Translate from "react-translate-component";
 
 class ConsoleMessages extends React.Component {
     showConsoleLogsInTextArea(lines) {
-        this.textArea.value = "";
-        let i =
-            console.messages.length >= lines ? lines : console.messages.length;
-
-        while (i) {
-            this.textArea.value +=
-                console.messages[console.messages.length - i--] + "\n";
-        }
+        this.textArea.value = console.messages
+            .slice(-lines)
+            .reduce(function(sum, current) {
+                return sum + current + "\n";
+            }, "");
     }
 
     copyAllToClipboard() {
@@ -18,9 +14,14 @@ class ConsoleMessages extends React.Component {
         document.execCommand("copy");
     }
 
-    prepareConsoleReport() {
+    changeConsoleReportSize() {
+        if (this.textArea.getAttribute("rows") > 0)
+            this.textArea.setAttribute("rows", "0");
+        else this.textArea.setAttribute("rows", "20");
+    }
+
+    componentDidMount() {
         this.showConsoleLogsInTextArea(20);
-        this.copyAllToClipboard();
     }
 
     render() {
@@ -28,10 +29,9 @@ class ConsoleMessages extends React.Component {
         return (
             <div id="consoleMessagesArea">
                 <textarea
-                    //               style={{display: 'none' }}
-                    rows="20"
-                    ref={thiz => {
-                        this.textArea = thiz;
+                    rows="0"
+                    ref={ref => {
+                        this.textArea = ref;
                     }}
                 />
             </div>
