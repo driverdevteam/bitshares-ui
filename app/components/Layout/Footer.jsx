@@ -49,7 +49,8 @@ class Footer extends React.Component {
         };
 
         this.debugReport = {
-            modal: null
+            modal: null,
+            linesInReport: 20
         };
 
         this.getNode = this.getNode.bind(this);
@@ -138,6 +139,12 @@ class Footer extends React.Component {
 
     openInNewTab(url) {
         window.open(url, "_blank").focus();
+    }
+
+    makeScreenshot() {
+        html2canvas(document.body).then(function(canvas) {
+            document.screenshotURL = canvas.toDataURL();
+        });
     }
 
     getNodeIndexByURL(url) {
@@ -470,7 +477,7 @@ class Footer extends React.Component {
                         <a
                             className="button primary"
                             onClick={() => {
-                                this.screenshot.prepareAdvancedReport();
+                                this.screenshot.changeScreenshotSize();
                             }}
                         >
                             <Translate content="report.advanced_report" />
@@ -647,10 +654,11 @@ class Footer extends React.Component {
                                 <div
                                     className="debug-report-launcher"
                                     onClick={() => {
+                                        this.makeScreenshot();
                                         this.debugReport.modal.show();
                                         if (this.consoleMessages)
                                             this.consoleMessages.showConsoleLogsInTextArea(
-                                                20
+                                                this.debugReport.linesInReport
                                             );
                                     }}
                                 >
