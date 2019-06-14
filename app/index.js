@@ -2,12 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import AppInit from "./AppInit";
 
-// let ar = ["первая", "вторая", "третья строка"];
-// var serialAr = JSON.stringify(ar);
-// localStorage.setItem("consoleMessages", serialAr);
-// let returnObj = JSON.parse(localStorage.getItem("consoleMessages"));
-// alert(returnObj[2]);
-
 function pushConsoleMessageToLocalStorage(str) {
     let consoleMessages = JSON.parse(localStorage.getItem("consoleMessages"));
 
@@ -32,11 +26,6 @@ console.defaultWarn = console.warn.bind(console);
 console.warn = function() {
     console.defaultWarn.apply(console, arguments);
     pushConsoleMessageToLocalStorage("warn: " + Array.from(arguments));
-};
-console.defaultDebug = console.debug.bind(console);
-console.debug = function() {
-    console.defaultDebug.apply(console, arguments);
-    pushConsoleMessageToLocalStorage("debug: " + Array.from(arguments));
 };
 console.defaultInfo = console.info.bind(console);
 console.info = function() {

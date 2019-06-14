@@ -21,8 +21,6 @@ import ZfApi from "react-foundation-apps/src/utils/foundation-api";
 import {ChainStore} from "bitsharesjs";
 import ifvisible from "ifvisible";
 import {getWalletName} from "branding";
-import ConsoleMessages from "./ConsoleMessages";
-import Screenshot from "./Screenshot";
 import html2canvas from "html2canvas";
 
 class Footer extends React.Component {
@@ -40,7 +38,10 @@ class Footer extends React.Component {
 
         this.state = {
             showNodesPopup: false,
-            showConnectingPopup: false
+            showConnectingPopup: false,
+            showTextArea: false,
+            screenshotURL: null,
+            showScreenshot: false
         };
 
         this.confirmOutOfSync = {
@@ -49,8 +50,7 @@ class Footer extends React.Component {
         };
 
         this.debugReport = {
-            modal: null,
-            linesInReport: 20
+            modal: null
         };
 
         this.getNode = this.getNode.bind(this);
@@ -145,6 +145,33 @@ class Footer extends React.Component {
         html2canvas(document.body).then(function(canvas) {
             document.screenshotURL = canvas.toDataURL();
         });
+        // this.setState({ screenshotURL: url });
+    }
+
+    renderConsoleMessages() {
+        let consoleMessages = JSON.parse(
+            localStorage.getItem("consoleMessages")
+        );
+
+        let textAreaValue = consoleMessages.reduce(function(sum, current) {
+            return sum + current + "\n";
+        }, "");
+
+        return (
+            <textarea
+                rows="20"
+                readOnly
+                value={textAreaValue}
+                ref={ref => {
+                    this.textArea = ref;
+                }}
+            />
+        );
+    }
+
+    copyAllToClipboard() {
+        this.textArea.select();
+        document.execCommand("copy");
     }
 
     getNodeIndexByURL(url) {
@@ -453,42 +480,56 @@ class Footer extends React.Component {
                         <a
                             className="button primary"
                             onClick={() => {
-                                this.consoleMessages.changeConsoleReportSize();
+                                this.setState({
+                                    showTextArea: !this.state.showTextArea
+                                });
                             }}
                         >
-                            <Translate content="report.console_report" />
+                            {!this.state.showTextArea ? (
+                                <Translate content="report.console_report" />
+                            ) : (
+                                <Translate content="report.hide" />
+                            )}
                         </a>
+                        {this.state.showTextArea ? (
+                            <a
+                                className="button primary"
+                                onClick={() => {
+                                    this.copyAllToClipboard();
+                                }}
+                            >
+                                <Translate content="report.copy_to_clipboard" />
+                            </a>
+                        ) : null}
+                        <br />
+                        <br />
+                        {this.state.showTextArea
+                            ? this.renderConsoleMessages()
+                            : null}
+                        <br />
                         <a
                             className="button primary"
                             onClick={() => {
-                                this.consoleMessages.copyAllToClipboard();
+                                this.setState({
+                                    showScreenshot: !this.state.showScreenshot
+                                });
                             }}
                         >
-                            <Translate content="report.copy_to_clipboard" />
+                            {!this.state.showScreenshot ? (
+                                <Translate content="report.advanced_report" />
+                            ) : (
+                                <Translate content="report.hide" />
+                            )}
                         </a>
                         <br />
                         <br />
-                        <ConsoleMessages
-                            ref={ref => {
-                                this.consoleMessages = ref;
-                            }}
-                        />
-                        <br />
-                        <a
-                            className="button primary"
-                            onClick={() => {
-                                this.screenshot.changeScreenshotSize();
-                            }}
-                        >
-                            <Translate content="report.advanced_report" />
-                        </a>
-                        <br />
-                        <br />
-                        <Screenshot
-                            ref={ref => {
-                                this.screenshot = ref;
-                            }}
-                        />
+                        {this.state.showScreenshot ? (
+                            <img
+                                width="100%"
+                                src={document.screenshotURL}
+                                //{this.state.screenshotURL}
+                            />
+                        ) : null}
                     </div>
                 </ChoiceModal>
                 <div className="show-for-medium grid-block shrink footer">
@@ -656,10 +697,6 @@ class Footer extends React.Component {
                                     onClick={() => {
                                         this.makeScreenshot();
                                         this.debugReport.modal.show();
-                                        if (this.consoleMessages)
-                                            this.consoleMessages.showConsoleLogsInTextArea(
-                                                this.debugReport.linesInReport
-                                            );
                                     }}
                                 >
                                     <Translate content="footer.debug_report" />
