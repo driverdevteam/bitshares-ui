@@ -2,11 +2,13 @@ import React from "react";
 
 class ConsoleMessages extends React.Component {
     showConsoleLogsInTextArea(lines) {
-        this.textArea.value = console.messages
-            .slice(-lines)
-            .reduce(function(sum, current) {
-                return sum + current + "\n";
-            }, "");
+        let consoleMessages = JSON.parse(
+            localStorage.getItem("consoleMessages")
+        );
+
+        this.textArea.value = consoleMessages.reduce(function(sum, current) {
+            return sum + current + "\n";
+        }, "");
     }
 
     copyAllToClipboard() {
