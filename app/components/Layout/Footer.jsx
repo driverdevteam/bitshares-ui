@@ -54,6 +54,8 @@ class Footer extends React.Component {
         };
 
         this.getNode = this.getNode.bind(this);
+        this.handleScreenshotButton = this.handleScreenshotButton.bind(this);
+        this.handleTextareaButton = this.handleTextareaButton.bind(this);
     }
 
     componentDidMount() {
@@ -74,7 +76,10 @@ class Footer extends React.Component {
             nextProps.rpc_connection_status !==
                 this.props.rpc_connection_status ||
             nextProps.synced !== this.props.synced ||
-            nextState.showNodesPopup !== this.state.showNodesPopup
+            nextState.showNodesPopup !== this.state.showNodesPopup ||
+            nextState.showTextArea !== this.state.showTextArea ||
+            nextState.showScreenshot !== this.state.showScreenshot ||
+            nextState.screenshotURL !== this.state.screenshotURL
         );
     }
 
@@ -142,10 +147,12 @@ class Footer extends React.Component {
     }
 
     makeScreenshot() {
-        html2canvas(document.body).then(function(canvas) {
-            document.screenshotURL = canvas.toDataURL();
-        });
-        // this.setState({ screenshotURL: url });
+        function doWork(ref, canvas) {
+            ref.setState({screenshotURL: canvas.toDataURL()});
+        }
+        html2canvas(document.body)
+            .then(doWork.bind(null, this))
+            .catch(console.error);
     }
 
     renderConsoleMessages() {
@@ -172,6 +179,18 @@ class Footer extends React.Component {
     copyAllToClipboard() {
         this.textArea.select();
         document.execCommand("copy");
+    }
+
+    handleTextareaButton() {
+        this.setState(state => ({
+            showTextArea: !state.showTextArea
+        }));
+    }
+
+    handleScreenshotButton() {
+        this.setState(state => ({
+            showScreenshot: !state.showScreenshot
+        }));
     }
 
     getNodeIndexByURL(url) {
@@ -479,11 +498,7 @@ class Footer extends React.Component {
                         <br />
                         <a
                             className="button primary"
-                            onClick={() => {
-                                this.setState({
-                                    showTextArea: !this.state.showTextArea
-                                });
-                            }}
+                            onClick={this.handleTextareaButton}
                         >
                             {!this.state.showTextArea ? (
                                 <Translate content="report.console_report" />
@@ -509,11 +524,7 @@ class Footer extends React.Component {
                         <br />
                         <a
                             className="button primary"
-                            onClick={() => {
-                                this.setState({
-                                    showScreenshot: !this.state.showScreenshot
-                                });
-                            }}
+                            onClick={this.handleScreenshotButton}
                         >
                             {!this.state.showScreenshot ? (
                                 <Translate content="report.advanced_report" />
@@ -524,11 +535,7 @@ class Footer extends React.Component {
                         <br />
                         <br />
                         {this.state.showScreenshot ? (
-                            <img
-                                width="100%"
-                                src={document.screenshotURL}
-                                //{this.state.screenshotURL}
-                            />
+                            <img width="100%" src={this.state.screenshotURL} />
                         ) : null}
                     </div>
                 </ChoiceModal>

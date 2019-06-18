@@ -2,6 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import AppInit from "./AppInit";
 
+if (localStorage.getItem("consoleMessages") === null)
+    localStorage.setItem("consoleMessages", JSON.stringify([""]));
+
 function pushConsoleMessageToLocalStorage(str) {
     let consoleMessages = JSON.parse(localStorage.getItem("consoleMessages"));
 
