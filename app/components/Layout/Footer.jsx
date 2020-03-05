@@ -21,6 +21,7 @@ import ZfApi from "react-foundation-apps/src/utils/foundation-api";
 import {ChainStore} from "bitsharesjs";
 import ifvisible from "ifvisible";
 import {getWalletName} from "branding";
+import html2canvas from "html2canvas";
 
 class Footer extends React.Component {
     static propTypes = {
@@ -37,7 +38,10 @@ class Footer extends React.Component {
 
         this.state = {
             showNodesPopup: false,
-            showConnectingPopup: false
+            showConnectingPopup: false,
+            showTextArea: false,
+            screenshotURL: null,
+            showScreenshot: false
         };
 
         this.confirmOutOfSync = {
@@ -45,7 +49,13 @@ class Footer extends React.Component {
             shownOnce: false
         };
 
+        this.debugReport = {
+            modal: null
+        };
+
         this.getNode = this.getNode.bind(this);
+        this.handleScreenshotButton = this.handleScreenshotButton.bind(this);
+        this.handleTextareaButton = this.handleTextareaButton.bind(this);
     }
 
     componentDidMount() {
@@ -66,7 +76,10 @@ class Footer extends React.Component {
             nextProps.rpc_connection_status !==
                 this.props.rpc_connection_status ||
             nextProps.synced !== this.props.synced ||
-            nextState.showNodesPopup !== this.state.showNodesPopup
+            nextState.showNodesPopup !== this.state.showNodesPopup ||
+            nextState.showTextArea !== this.state.showTextArea ||
+            nextState.showScreenshot !== this.state.showScreenshot ||
+            nextState.screenshotURL !== this.state.screenshotURL
         );
     }
 
@@ -127,6 +140,57 @@ class Footer extends React.Component {
                 })
                 .start();
         }
+    }
+
+    openInNewTab(url) {
+        window.open(url, "_blank").focus();
+    }
+
+    makeScreenshot() {
+        function doWork(ref, canvas) {
+            ref.setState({screenshotURL: canvas.toDataURL()});
+        }
+        html2canvas(document.body)
+            .then(doWork.bind(null, this))
+            .catch(console.error);
+    }
+
+    renderConsoleMessages() {
+        let consoleMessages = JSON.parse(
+            localStorage.getItem("consoleMessages")
+        );
+
+        let textAreaValue = consoleMessages.reduce(function(sum, current) {
+            return sum + current + "\n";
+        }, "");
+
+        return (
+            <textarea
+                rows="20"
+                readOnly
+                value={textAreaValue}
+                ref={ref => {
+                    this.textArea = ref;
+                }}
+            />
+        );
+    }
+
+    copyAllToClipboard() {
+        this.textArea.select();
+        document.execCommand("copy");
+    }
+
+    handleTextareaButton() {
+        this.setState(state => ({
+            showTextArea: !state.showTextArea
+        }));
+    }
+
+    handleScreenshotButton() {
+        this.setState(state => ({
+            showScreenshot: !state.showScreenshot
+        }));
     }
 
     getNodeIndexByURL(url) {
@@ -342,8 +406,8 @@ class Footer extends React.Component {
                     )}
                 <ChoiceModal
                     modalId="footer_out_of_sync"
-                    ref={thiz => {
-                        this.confirmOutOfSync.modal = thiz;
+                    ref={ref => {
+                        this.confirmOutOfSync.modal = ref;
                     }}
                     choices={[
                         {
@@ -391,6 +455,88 @@ class Footer extends React.Component {
                                 )}
                             />
                         )}
+                    </div>
+                </ChoiceModal>
+                <ChoiceModal
+                    modalId="footer_debug_report"
+                    ref={ref => {
+                        this.debugReport.modal = ref;
+                    }}
+                    choices={[]}
+                >
+                    <div>
+                        <Translate content="report.title" component="h2" />
+                        <Translate content="report.report_description" />
+                        <br />
+                        <br />
+                        <Translate content="report.link_to_github" />
+                        <br />
+                        <a
+                            onClick={() => {
+                                this.openInNewTab(
+                                    "https://github.com/bitshares/bitshares-ui/issues"
+                                );
+                            }}
+                        >
+                            https://github.com/bitshares/bitshares-ui/issues
+                        </a>
+                        <br />
+                        <br />
+                        <Translate content="report.how_to_report" />
+                        <br />
+                        <br />
+                        <Translate content="report.security_report_link" />
+                        <br />
+                        <a
+                            onClick={() => {
+                                this.openInNewTab("https://hackthedex.io");
+                            }}
+                        >
+                            https://hackthedex.io
+                        </a>
+                        <br />
+                        <br />
+                        <a
+                            className="button primary"
+                            onClick={this.handleTextareaButton}
+                        >
+                            {!this.state.showTextArea ? (
+                                <Translate content="report.console_report" />
+                            ) : (
+                                <Translate content="report.hide" />
+                            )}
+                        </a>
+                        {this.state.showTextArea ? (
+                            <a
+                                className="button primary"
+                                onClick={() => {
+                                    this.copyAllToClipboard();
+                                }}
+                            >
+                                <Translate content="report.copy_to_clipboard" />
+                            </a>
+                        ) : null}
+                        <br />
+                        <br />
+                        {this.state.showTextArea
+                            ? this.renderConsoleMessages()
+                            : null}
+                        <br />
+                        <a
+                            className="button primary"
+                            onClick={this.handleScreenshotButton}
+                        >
+                            {!this.state.showScreenshot ? (
+                                <Translate content="report.advanced_report" />
+                            ) : (
+                                <Translate content="report.hide" />
+                            )}
+                        </a>
+                        <br />
+                        <br />
+                        {this.state.showScreenshot ? (
+                            <img width="100%" src={this.state.screenshotURL} />
+                        ) : null}
                     </div>
                 </ChoiceModal>
                 <div className="show-for-medium grid-block shrink footer">
@@ -552,6 +698,15 @@ class Footer extends React.Component {
                                             {block_height}
                                         </span>
                                     </div>
+                                </div>
+                                <div
+                                    className="debug-report-launcher"
+                                    onClick={() => {
+                                        this.makeScreenshot();
+                                        this.debugReport.modal.show();
+                                    }}
+                                >
+                                    <Translate content="footer.debug_report" />
                                 </div>
                                 <div className="grid-block">
                                     <div

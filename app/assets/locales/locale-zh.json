@@ -764,7 +764,8 @@
         "synced": "已同步",
         "title": "BitShares",
         "unsynced": "未同步",
-        "update_available": "有可用的更新"
+        "update_available": "有可用的更新",
+        "debug_report": "报告"
     },
     "gateway": {
         "add_funds": "轻松快捷地对比特股账户 <strong>%(account)s</strong> 进行充值。此服务由 OpenLedger 提供。",

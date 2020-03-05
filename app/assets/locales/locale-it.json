@@ -764,7 +764,8 @@
         "synced": "Sincronizzato",
         "title": "BitShares",
         "unsynced": "Fuori sincrono",
-        "update_available": "AGGIORNAMENTO DISPONIBILE"
+        "update_available": "AGGIORNAMENTO DISPONIBILE",
+        "debug_report": "Rapporto"
     },
     "gateway": {
         "add_funds": "Aggiungi fondi rapidamente e facilmente al tuo account BitShares <strong>%(account)s</strong>. Questo servizio è fornito da Openledger.",

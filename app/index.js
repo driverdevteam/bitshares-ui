@@ -1,6 +1,41 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import AppInit from "./AppInit";
+
+if (localStorage.getItem("consoleMessages") === null)
+    localStorage.setItem("consoleMessages", JSON.stringify([""]));
+
+function pushConsoleMessageToLocalStorage(str) {
+    let consoleMessages = JSON.parse(localStorage.getItem("consoleMessages"));
+
+    consoleMessages.push(str);
+    consoleMessages = consoleMessages.slice(-20);
+
+    let serialConsoleMessages = JSON.stringify(consoleMessages);
+    localStorage.setItem("consoleMessages", serialConsoleMessages);
+}
+
+console.defaultLog = console.log.bind(console);
+console.log = function() {
+    console.defaultLog.apply(console, arguments);
+    pushConsoleMessageToLocalStorage("log: " + Array.from(arguments));
+};
+console.defaultError = console.error.bind(console);
+console.error = function() {
+    console.defaultError.apply(console, arguments);
+    pushConsoleMessageToLocalStorage("error: " + Array.from(arguments));
+};
+console.defaultWarn = console.warn.bind(console);
+console.warn = function() {
+    console.defaultWarn.apply(console, arguments);
+    pushConsoleMessageToLocalStorage("warn: " + Array.from(arguments));
+};
+console.defaultInfo = console.info.bind(console);
+console.info = function() {
+    console.defaultInfo.apply(console, arguments);
+    pushConsoleMessageToLocalStorage("info: " + Array.from(arguments));
+};
+
 if (__PERFORMANCE_DEVTOOL__) {
     const {registerObserver} = require("react-perf-devtool");
     registerObserver();
